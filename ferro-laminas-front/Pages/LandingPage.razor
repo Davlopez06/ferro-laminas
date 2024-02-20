@@ -1,0 +1,89 @@
+﻿@page "/"
+
+<PageTitle>Ferro Laminas</PageTitle>
+
+<div class="Landing-page" >
+    <img aria-live="polite" class="@logoClass" src="/utils/logo-img.png" alt="Logo" />
+    <img class="@logoTextClass" src="/utils/logo-text.png" alt="Logo-Text" />
+    <form class="@formClass" @onsubmit="hanldeSubmitLogin">
+        <div class="@inputClass">
+            <label for="name"> Nombre:</label>
+            <input id="name" type="text" @bind="name" />
+        </div>
+        <div>
+            <label for="mail">Correo:</label>
+            <input id="mail" type="text" @bind="mail" />
+        </div>
+        <div>
+            <label for="password">Contraseña:</label>
+            <input id="password" type="password" @bind="password" />
+        </div>
+        <button type="submit">@submitButtonText</button>
+        <p>@buttonQuestion <button @onclick="hanldeChangeResgister" >@buttonText</button></p>
+    </form>
+</div>
+
+@code {
+    private string logoClass { get; set; }
+    private string logoTextClass { get; set; }
+    private string inputClass { get; set; }
+    private string formClass { get; set; }
+    private string mail { get; set; }
+    private string password { get; set; }
+    private string name { get; set; }
+    private string loginType { get; set; }
+    private string buttonQuestion { get; set; }
+    private string buttonText { get; set; }
+    private string submitButtonText { get; set; }
+    private Timer timer { get; set; }
+
+    protected override void OnInitialized()
+    {
+        logoClass = "logo-rotation";
+        logoTextClass = "logo-text";
+        formClass = "form-login-hiden";
+        loginType = "Login";
+        mail = "";
+        password = "";
+        name = "";
+        inputClass = "input-hide";
+        buttonQuestion = "Aún no estás registrado ?";
+        buttonText = "Regístrate";
+        submitButtonText = "Inciar Sesión";
+        timer = new Timer(EjecutarTimeout, null, 4000, Timeout.Infinite);
+    }
+
+    private void EjecutarTimeout(object state)
+    {
+        logoClass = "logo";
+        logoTextClass = "logo-text-hiden";
+        formClass = "form-login";
+        StateHasChanged();
+    }
+
+    private void hanldeSubmitLogin()
+    {
+        Console.WriteLine(name);
+        Console.WriteLine(mail);
+        Console.WriteLine(password);
+    }
+
+    private void hanldeChangeResgister()
+    {
+        if (loginType == "Login") { 
+            loginType = "Register";
+            inputClass = "";
+            submitButtonText = "Registrate";
+            buttonQuestion = "Ya estas resgitrado ?";
+            buttonText = "Incia Sesión";
+        }
+        else {
+            loginType = "Login";
+            inputClass = "input-hide";
+            buttonQuestion = "Aún no estás registrado ?";
+            submitButtonText = "Inciar Sesión";
+            buttonText = "Regístrate";
+        }
+        StateHasChanged();
+    }
+}
